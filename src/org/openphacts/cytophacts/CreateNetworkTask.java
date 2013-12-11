@@ -52,8 +52,10 @@ public class CreateNetworkTask extends AbstractAction
 			myNet = adapter.getCyNetworkFactory().createNetwork();
 			myNet.getRow(myNet).set(CyNetwork.NAME, "OpenPhacts");
 			
-			String SMILES = "CC(=O)Oc1ccccc1C(=O)O";
-			List<String> compounds = om.getSubStructureSearch(SMILES);
+			String valylglucose = "CC(C)C(C(=O)O[C@@H](C=O)[C@H]([C@@H]([C@@H](CO)O)O)O)N";
+			String aspirin = "CC(=O)Oc1ccccc1C(=O)O";
+			String ethylPyruvate = "CCOC(=O)C(=O)C";
+			List<String> compounds = om.getSubStructureSearch(ethylPyruvate);
 	
 			// Add two nodes to the network
 			
@@ -65,9 +67,11 @@ public class CreateNetworkTask extends AbstractAction
 			// set name attribute for new nodes
 			table.getRow(nodeMainCompound.getSUID()).set("name", mainName);
 	
+			int count = 0;
 			for (String comp : compounds)
 			{
 				System.out.println ("Compound: " + comp);
+				if (count++ >= 20) break; //Don't look further than top 20.
 				
 				// Add two nodes to the network
 				CyNode nodeComp = createOrGet(comp);
