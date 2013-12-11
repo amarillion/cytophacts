@@ -4,7 +4,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class OpenPhactsMethods 
@@ -50,11 +53,33 @@ public class OpenPhactsMethods
 	 * Get a list of pathways for a given organism
 	 * @param organismName
 	 * @return pathway ids.
+	 * @throws IOException 
 	 */
-	public List<String> getPathways(String organismName)
+	public List<String> getOpenPhacts(URL url) throws IOException{
+		List<String> result = new ArrayList<String>();
+		InputStream is = url.openStream();
+		InputStreamReader inStream = new InputStreamReader(is); 
+		BufferedReader buff= new BufferedReader(inStream);
+		String nextLine;
+		// Read and print the lines from index.html
+		while (true){
+			nextLine = buff.readLine();  
+			if (nextLine !=null){
+				result.add(nextLine); 
+			}
+			else{
+				break;
+			} 
+		}
+		
+		return result;
+	}
+	
+	public List<String> getPathways(String organismName) throws IOException
 	{
-		//TODO
-		return null;
+		URL url = new URL("http://ops2.few.vu.nl/pathways?app_id=b9d2be99&app_key=c5eaa930c723fcfda47c1b0e0f201b4f&pathway_organism="+organismName.replace(" ", "+")+"&_format=tsv");
+		System.out.println(organismName.replace(" ", "+"));
+		return getOpenPhacts(url);
 	}
 
 	/**
@@ -71,7 +96,7 @@ public class OpenPhactsMethods
 
 	public void run() throws IOException
 	{
-		URL url = new URL("http://ops2.few.vu.nl/pathways?app_id=b9d2be99&app_key=c5eaa930c723fcfda47c1b0e0f201b4f&pathway_organism=Homo+sapiens&_format=tsv");
+		/*URL url = new URL("http://ops2.few.vu.nl/pathways?app_id=b9d2be99&app_key=c5eaa930c723fcfda47c1b0e0f201b4f&pathway_organism=Homo+sapiens&_format=tsv");
 		InputStream is = url.openStream();
 		InputStreamReader inStream = new InputStreamReader(is); 
 		BufferedReader buff= new BufferedReader(inStream);
@@ -85,6 +110,11 @@ public class OpenPhactsMethods
 			else{
 				break;
 			} 
+		}*/
+		List<String> pathwayList = getPathways("Homo sapiens");
+		for (String pwy : pathwayList)
+		{
+			System.out.println(pwy);
 		}
 	}
 
