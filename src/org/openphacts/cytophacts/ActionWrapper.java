@@ -8,6 +8,10 @@ import org.cytoscape.work.TaskFactory;
 import org.cytoscape.work.TaskIterator;
 import org.cytoscape.work.TaskMonitor;
 
+/**
+ * Wrapper for an AbstractAction - turns the AbstractAction into a Cytoscape Task,
+ * so it can be registered as a menu item.
+ */
 public class ActionWrapper implements TaskFactory 
 {
 	@Override

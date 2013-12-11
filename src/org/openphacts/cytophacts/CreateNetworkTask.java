@@ -14,6 +14,9 @@ import org.cytoscape.model.CyNetwork;
 import org.cytoscape.model.CyNode;
 import org.cytoscape.model.CyTable;
 
+/**
+ * Task to fetch network data from the OpenPhacts API.
+ */
 public class CreateNetworkTask extends AbstractAction 
 {
 	private CyAppAdapter adapter;
@@ -27,6 +30,7 @@ public class CreateNetworkTask extends AbstractAction
 	private CyNetwork myNet;
 	private Map<String, CyNode> idMap = new HashMap<String, CyNode>();
 	
+	/** returns the node for a given key, or creates a new one if it doesn't exist. */
 	public CyNode createOrGet (String key)
 	{
 		if (idMap.containsKey(key))
@@ -41,6 +45,7 @@ public class CreateNetworkTask extends AbstractAction
 		}
 	}
 	
+	/** actually create the network */
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
@@ -52,13 +57,13 @@ public class CreateNetworkTask extends AbstractAction
 			myNet = adapter.getCyNetworkFactory().createNetwork();
 			myNet.getRow(myNet).set(CyNetwork.NAME, "OpenPhacts");
 			
+			// Some hard-coded search values. TODO: use an input dialog. 
 			String valylglucose = "CC(C)C(C(=O)O[C@@H](C=O)[C@H]([C@@H]([C@@H](CO)O)O)O)N";
 			String aspirin = "CC(=O)Oc1ccccc1C(=O)O";
 			String ethylPyruvate = "CCOC(=O)C(=O)C";
 			List<String> compounds = om.getSubStructureSearch(ethylPyruvate);
-	
-			// Add two nodes to the network
 			
+			// TODO: look up the name of the compound instead of hard-coding
 			String mainName = "Aspirin";
 			CyNode nodeMainCompound = createOrGet(mainName);
 			
