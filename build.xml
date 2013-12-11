@@ -7,7 +7,7 @@
 	<property name="ant.build.javac.target" value="1.6"/>
 	<property name="ant.build.javac.source" value="1.6"/>
     <property name="build.dir" value="./build"/>
-  	<property name="version" value="1.10"/>
+  	<property name="version" value="0.1"/>
 
 	<!-- following properties may be overriden for different configurations -->
   	<!-- <property name="extrasrc" value="src-internal"/> -->
@@ -18,7 +18,6 @@
   <!-- Initialization target                                               -->
   <!-- =================================================================== -->
   <target name="init">
-
   	<property name="plugin_name" value="cytophacts-v${version}"/>
   	<property name="project.jar" value="${plugin_name}.jar"/>
   	
@@ -62,11 +61,12 @@
   <!-- Compiles the project                                           -->
   <!-- =================================================================== -->
   <target name="retrieve">
-		<ivy:retrieve pattern="ivycache/[artifact]-[revision].[ext]" sync="true"/>
+	<ivy:retrieve pattern="ivycache/[artifact]-[revision].[ext]" sync="true"/>
   </target>
 
   <target name="build" depends="init,retrieve"  >
 
+  	<mkdir dir="ivycache"/>
    <echo message="COMPILE ${plugin_name} ..."/>
     
   	   <!-- includes="${test.dir}/*" -->

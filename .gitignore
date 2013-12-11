@@ -4,3 +4,5 @@
 /bin/
 /build/
 /ivycache/
+ivysettings.xml
+cytophacts-v*.jar
