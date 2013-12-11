@@ -1,10 +1,12 @@
 package org.openphacts.cytophacts;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -79,7 +81,20 @@ public class OpenPhactsMethods
 	 */
 	public List<String> getOpenPhacts(URL url) throws IOException{
 		List<String> result = new ArrayList<String>();
-		InputStream is = url.openStream();
+		
+		InputStream is;
+		try
+		{
+		URLConnection con = url.openConnection();
+		is = con.getInputStream();
+		}
+		catch (FileNotFoundException ex)
+		{
+			// 404 response is equivalent to 0 results
+			// OpenPhacts API does not distinguish between this and other error conditions.
+			return result;
+		}
+		
 		InputStreamReader inStream = new InputStreamReader(is); 
 		BufferedReader buff= new BufferedReader(inStream);
 		String nextLine;
@@ -133,16 +148,23 @@ public class OpenPhactsMethods
 				break;
 			} 
 		}*/
-		List<String> pathwayList = getPathways("Homo sapiens");
-		for (String pwy : pathwayList)
+//		List<String> pathwayList = getPathways("Homo sapiens");
+//		for (String pwy : pathwayList)
+//		{
+//			System.out.println(pwy);
+//		}
+//		List<String> substructureList = getSubStructureSearch("CC(=O)Oc1ccccc1C(=O)O");
+//		for (String ssl : substructureList)
+//		{
+//			System.out.println(ssl);
+//		}
+		
+		List<String> pwyByCompound = getPathwaysForCompound("http://ops.rsc.org/OPS1536399", "Homo sapiens");
+		for (String x : pwyByCompound)
 		{
-			System.out.println(pwy);
+			System.out.println(x); 
 		}
-		List<String> substructureList = getSubStructureSearch("CC(=O)Oc1ccccc1C(=O)O");
-		for (String ssl : substructureList)
-		{
-			System.out.println(ssl);
-		}
+		
 	}
 
 }

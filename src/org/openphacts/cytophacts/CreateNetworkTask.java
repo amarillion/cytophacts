@@ -67,6 +67,8 @@ public class CreateNetworkTask extends AbstractAction
 	
 			for (String comp : compounds)
 			{
+				System.out.println ("Compound: " + comp);
+				
 				// Add two nodes to the network
 				CyNode nodeComp = createOrGet(comp);
 				// set name attribute for new nodes
@@ -96,7 +98,8 @@ public class CreateNetworkTask extends AbstractAction
 		}
 		catch (Exception ex)
 		{
-			JOptionPane.showMessageDialog(null, "Exception: " + ex.getMessage());
+			JOptionPane.showMessageDialog(null, "Exception: " + ex.getClass().getName() + " " + ex.getMessage());
+			ex.printStackTrace();
 		}
 	}
 }
