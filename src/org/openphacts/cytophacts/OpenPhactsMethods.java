@@ -9,6 +9,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -50,10 +51,23 @@ public class OpenPhactsMethods
 		return getOpenPhacts(url).get(1).split("\t")[20];
 	}
 	
+	private static class StructureSearchResult implements Comparable<StructureSearchResult>
+	{
+		String id;
+		Number relevance;
+		
+		@Override
+		public int compareTo(StructureSearchResult o) 
+		{
+			return Double.compare(o.relevance.doubleValue(), relevance.doubleValue()); 
+		}
+
+	}
+	
 	/**
 	 * Use substructure search to get a list of similar compounds.
 	 * @param SMILES, for example "CC(=O)Oc1ccccc1C(=O)O"
-	 * @return list of compounds IDS
+	 * @return list of compounds IDS, sorted by relevance, most relevant first
 	 * @throws IOException 
 	 */
 	public List<String> getSubStructureSearch(String SMILES) throws IOException
@@ -63,13 +77,26 @@ public class OpenPhactsMethods
 		InputStream is = url.openStream();
 		Map<String, ?> result = mapper.readValue(is, Map.class);
 		
-		List<?> searchResults = (List<?>)((Map<?, ?>)((Map<?, ?>)result.get("result")).get("primaryTopic")).get("result");
+		List<Map<String, ?>> searchResults = (List<Map<String, ?>>)((Map<?, ?>)((Map<?, ?>)result.get("result")).get("primaryTopic")).get("result");
+		
+		List<StructureSearchResult> searchResult = new ArrayList<StructureSearchResult>();
+		for (Map<String, ?> o : searchResults)
+		{
+			StructureSearchResult ssr = new StructureSearchResult();
+			ssr.id = (String)o.get("_about");
+			ssr.relevance = (Number)o.get("relevance");
+			searchResult.add (ssr);
+		}
+		// Sort by relevance
+		Collections.sort (searchResult);
 		
 		List<String> ids = new ArrayList<String>();
-		for (Object o : searchResults)
+		for (StructureSearchResult ssr : searchResult)
 		{
-			ids.add ((String)((Map <?, ?>)o).get("_about"));
+			System.out.println (ssr.id + " " + ssr.relevance);
+			ids.add (ssr.id);
 		}
+		
 		return ids;
 	}
 	
