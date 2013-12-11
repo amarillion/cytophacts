@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: cytophacts
+Bundle-SymbolicName: cytophacts
+Bundle-Version: 1.0.0.qualifier
+Import-Package: org.cytoscape.application;version="[3.1,4)",
+ org.cytoscape.application.swing;version="[3.1,4)",
+ org.cytoscape.model;version="[3.1,4)",
+ org.cytoscape.service.util;version="[3.1,4)",
+ org.cytoscape.task;version="[3.1,4)",
+ org.cytoscape.view.model;version="[3.1,4)",
+ org.cytoscape.work;version="[3.1,4)",
+ org.osgi.framework;version="[1.5,2)"
+Bundle-Activator: org.openphacts.cytophacts.CyActivator
