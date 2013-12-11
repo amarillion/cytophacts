@@ -61,10 +61,11 @@ public class CreateNetworkTask extends AbstractAction
 			String valylglucose = "CC(C)C(C(=O)O[C@@H](C=O)[C@H]([C@@H]([C@@H](CO)O)O)O)N";
 			String aspirin = "CC(=O)Oc1ccccc1C(=O)O";
 			String ethylPyruvate = "CCOC(=O)C(=O)C";
-			List<String> compounds = om.getSubStructureSearch(ethylPyruvate);
+			String pyruvate = "O=C(C(=O)O)C";
+			List<String> compounds = om.getSubStructureSearch(pyruvate);
 			
 			// TODO: look up the name of the compound instead of hard-coding
-			String mainName = "Aspirin";
+			String mainName = "Pyruvate";
 			CyNode nodeMainCompound = createOrGet(mainName);
 			
 			CyTable table = myNet.getDefaultNodeTable();
@@ -77,7 +78,7 @@ public class CreateNetworkTask extends AbstractAction
 			for (String comp : compounds)
 			{
 				System.out.println ("Compound: " + comp);
-				if (count++ >= 20) break; //Don't look further than top 20.
+				if (count++ >= 5) break; //Don't look further than top XXX.
 				
 				// Add node to the network for a compound
 				CyNode nodeComp = createOrGet(comp);
