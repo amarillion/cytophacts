@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -32,11 +33,19 @@ public class OpenPhactsMethods
 	 * Get the SMILES string for a compound by name
 	 * @param chemicalName
 	 * @return SMILES string.
+	 * @throws IOException 
 	 */
-	public String getSMILES (String chemicalName)
+	
+	public List<String> getChemicalFromText(String compoundName) throws IOException{
+		URL url = new URL("https://beta.openphacts.org/1.3/search/byTag?app_id=b9d2be99&app_key=c5eaa930c723fcfda47c1b0e0f201b4f&q=lactate&uuid=07a84994-e464-4bbf-812a-a4b96fa3d197&_format=tsv");
+		return getOpenPhacts(url);
+	}
+	
+	
+	public String getSMILES (String chemicalUrl) throws IOException
 	{
-		//TODO
-		return null;
+		URL url = new URL("https://beta.openphacts.org/1.3/compound?uri="+URLEncoder.encode(chemicalUrl, "UTF-8")+"&app_id=b9d2be99&app_key=c5eaa930c723fcfda47c1b0e0f201b4f&_format=tsv");
+		return getOpenPhacts(url).get(1).split("\t")[20];
 	}
 	
 	/**
@@ -80,7 +89,7 @@ public class OpenPhactsMethods
 	
 	public List<String> getPathways(String organismName) throws IOException
 	{
-		URL url = new URL("http://ops2.few.vu.nl/pathways?app_id=b9d2be99&app_key=c5eaa930c723fcfda47c1b0e0f201b4f&pathway_organism="+organismName.replace(" ", "+")+"&_format=tsv");
+		URL url = new URL("http://ops2.few.vu.nl/pathways?app_id=b9d2be99&app_key=c5eaa930c723fcfda47c1b0e0f201b4f&pathway_organism="+URLEncoder.encode(organismName, "UTF-8")+"&_format=tsv");
 		return getOpenPhacts(url);
 	}
 
@@ -89,11 +98,12 @@ public class OpenPhactsMethods
 	 * @param compoundID
 	 * @param organismName
 	 * @return a list of pathway identifiers.
+	 * @throws IOException 
 	 */
-	public List<String> getPathwaysForCompound (String compoundID, String organismName)
+	public List<String> getPathwaysForCompound (String compoundURI, String organismName) throws IOException
 	{
-		//TODO
-		return null;
+		URL url = new URL("https://beta.openphacts.org/1.3/pathways/byCompound?uri="+URLEncoder.encode(compoundURI, "UTF-8")+"&app_id=b9d2be99&app_key=c5eaa930c723fcfda47c1b0e0f201b4f&pathway_organism="+URLEncoder.encode(organismName, "UTF-8")+"&_format=tsv");
+		return getOpenPhacts(url);
 	}
 
 	public void run() throws IOException
