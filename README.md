@@ -27,6 +27,14 @@ Step 4:
 	
 	cytoscape.dir=/home/martijn/opt/cytoscape-unix-3.2.0-SNAPSHOT
 
+Step 5:
+	Build with `ant install`. If all goes well, the plugin will be copied
+	to your cytoscape app installation directory.
+
+Step 6:
+	Run Cytoscape 3. If you modify the plugin sources, there is no need to 
+	restart cytoscape. Just call `ant install` again, and Cytoscape
+	will detect changes automatically.
 
 Terms of use
 ============
