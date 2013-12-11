@@ -23,5 +23,7 @@ Import-Package: org.cytoscape.application;version="[3.0,4)",
  javax.swing.text,
  javax.swing.filechooser,
  javax.swing.table,
- javax.swing.undo
+ javax.swing.undo,
+ javax.xml.parsers,
+ org.w3c.dom
 Bundle-Activator: org.openphacts.cytophacts.CyActivator

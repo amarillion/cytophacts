@@ -68,6 +68,7 @@ public class CreateNetworkTask extends AbstractAction
 			CyNode nodeMainCompound = createOrGet(mainName);
 			
 			CyTable table = myNet.getDefaultNodeTable();
+			table.createColumn("uuid", String.class, true);
 			
 			// set name attribute for new nodes
 			table.getRow(nodeMainCompound.getSUID()).set("name", mainName);
@@ -80,8 +81,11 @@ public class CreateNetworkTask extends AbstractAction
 				
 				// Add node to the network for a compound
 				CyNode nodeComp = createOrGet(comp);
+				
+				
 				List<String> uuids = om.getConceptWikiUUID(comp);
 				String uuid = uuids.get(0); // TODO check that there really is only one.
+				System.out.println ("UUID: " + uuid);
 				
 				// set name attribute for new nodes
 				myNet.getDefaultNodeTable().getRow(nodeComp.getSUID()).set("name", comp);
@@ -111,7 +115,7 @@ public class CreateNetworkTask extends AbstractAction
 		}
 		catch (Exception ex)
 		{
-			JOptionPane.showMessageDialog(null, "Exception: " + ex.getClass().getName() + " " + ex.getMessage());
+			JOptionPane.showMessageDialog(null, "<html>Exception: " + ex.getClass().getName() + "</br>" + ex.getMessage());
 			ex.printStackTrace();
 		}
 	}
