@@ -1,9 +1,12 @@
 package org.openphacts.cytophacts;
 
 import java.awt.event.ActionEvent;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.AbstractAction;
+import javax.swing.JOptionPane;
 
 import org.cytoscape.app.CyAppAdapter;
 import org.cytoscape.app.swing.CySwingAppAdapter;
@@ -21,13 +24,30 @@ public class CreateNetworkTask extends AbstractAction
 		this.adapter = adapter;
 	}
 	
+	private CyNetwork myNet;
+	private Map<String, CyNode> idMap = new HashMap<String, CyNode>();
+	
+	public CyNode createOrGet (String key)
+	{
+		if (idMap.containsKey(key))
+		{
+			return idMap.get(key);
+		}
+		else
+		{
+			CyNode node = myNet.addNode();
+			idMap.put (key, node);
+			return node;
+		}
+	}
+	
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
 		OpenPhactsMethods om = new OpenPhactsMethods();
 		
 		// Create an empty network
-		CyNetwork myNet = adapter.getCyNetworkFactory().createNetwork();
+		myNet = adapter.getCyNetworkFactory().createNetwork();
 		myNet.getRow(myNet).set(CyNetwork.NAME, "OpenPhacts");
 		
 		String SMILES = "CC(=O)Oc1ccccc1C(=O)O";
@@ -35,7 +55,7 @@ public class CreateNetworkTask extends AbstractAction
 
 		// Add two nodes to the network
 		
-		CyNode nodeMainCompound = myNet.addNode();
+		CyNode nodeMainCompound = createOrGet("INPUT");
 		
 		CyTable table = myNet.getDefaultNodeTable();
 		
@@ -45,7 +65,7 @@ public class CreateNetworkTask extends AbstractAction
 		for (String comp : compounds)
 		{
 			// Add two nodes to the network
-			CyNode nodeComp = myNet.addNode();
+			CyNode nodeComp = createOrGet("comp");
 			// set name attribute for new nodes
 			myNet.getDefaultNodeTable().getRow(nodeComp.getSUID()).set("name", comp);
 			
@@ -58,7 +78,8 @@ public class CreateNetworkTask extends AbstractAction
 			for (String pwy : pwys)
 			{
 				// Add two nodes to the network
-				CyNode nodePwy = myNet.addNode();
+				CyNode nodePwy = createOrGet(pwy);
+				
 				// set name attribute for new nodes
 				myNet.getDefaultNodeTable().getRow(nodePwy.getSUID()).set("name", pwy);
 				
