@@ -33,11 +33,19 @@ public class OpenPhactsMethods
 	 * Get the SMILES string for a compound by name
 	 * @param chemicalName
 	 * @return SMILES string.
+	 * @throws IOException 
 	 */
-	public String getSMILES (String chemicalName)
+	
+	public List<String> getChemicalFromText(String compoundName) throws IOException{
+		URL url = new URL("https://beta.openphacts.org/1.3/search/byTag?app_id=b9d2be99&app_key=c5eaa930c723fcfda47c1b0e0f201b4f&q=lactate&uuid=07a84994-e464-4bbf-812a-a4b96fa3d197&_format=tsv");
+		return getOpenPhacts(url);
+	}
+	
+	
+	public String getSMILES (String chemicalUrl) throws IOException
 	{
-		//TODO
-		return null;
+		URL url = new URL("https://beta.openphacts.org/1.3/compound?uri="+URLEncoder.encode(chemicalUrl, "UTF-8")+"&app_id=b9d2be99&app_key=c5eaa930c723fcfda47c1b0e0f201b4f&_format=tsv");
+		return getOpenPhacts(url).get(1).split("\t")[20];
 	}
 	
 	/**
