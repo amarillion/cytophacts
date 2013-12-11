@@ -55,17 +55,15 @@ public class OpenPhactsMethods
 	 * @return pathway ids.
 	 * @throws IOException 
 	 */
-	public List<String> getPathways(String organismName) throws IOException
-	{
-		URL url = new URL("http://ops2.few.vu.nl/pathways?app_id=b9d2be99&app_key=c5eaa930c723fcfda47c1b0e0f201b4f&pathway_organism="+organismName.replace(" ", "+")+"&_format=tsv");
-		List<String> result = new ArrayList();
+	public List<String> getOpenPhacts(URL url) throws IOException{
+		List<String> result = new ArrayList<String>();
 		InputStream is = url.openStream();
 		InputStreamReader inStream = new InputStreamReader(is); 
 		BufferedReader buff= new BufferedReader(inStream);
 		String nextLine;
 		// Read and print the lines from index.html
 		while (true){
-			nextLine =buff.readLine();  
+			nextLine = buff.readLine();  
 			if (nextLine !=null){
 				result.add(nextLine); 
 			}
@@ -73,7 +71,15 @@ public class OpenPhactsMethods
 				break;
 			} 
 		}
+		
 		return result;
+	}
+	
+	public List<String> getPathways(String organismName) throws IOException
+	{
+		URL url = new URL("http://ops2.few.vu.nl/pathways?app_id=b9d2be99&app_key=c5eaa930c723fcfda47c1b0e0f201b4f&pathway_organism="+organismName.replace(" ", "+")+"&_format=tsv");
+		System.out.println(organismName.replace(" ", "+"));
+		return getOpenPhacts(url);
 	}
 
 	/**
@@ -106,9 +112,9 @@ public class OpenPhactsMethods
 			} 
 		}*/
 		List<String> pathwayList = getPathways("Homo sapiens");
-		Iterator<String> iterator = pathwayList.iterator();
-		while (iterator.hasNext()) {
-			System.out.println(iterator.next());
+		for (String pwy : pathwayList)
+		{
+			System.out.println(pwy);
 		}
 	}
 
