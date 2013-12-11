@@ -59,18 +59,27 @@ public class OpenPhactsMethods
 	public List<String> getConceptWikiUUID(String uri) throws IOException, ParserConfigurationException, SAXException
 	{
 		List<String> result = new ArrayList<String>();
-		URL url = new URL("http://openphacts.cs.man.ac.uk:9092/QueryExpander/mapUri?Uri="+URLEncoder.encode(uri, "UTF-8")+"&format=application/xml&targetUriPattern=http://www.conceptwiki.org/concept/$id");
-		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-        DocumentBuilder db = dbf.newDocumentBuilder();
-        Document results = db.parse(url.openStream());
-		NodeList nl = results.getElementsByTagName("targetUri");
-		for (int i = 0; i < nl.getLength(); ++i)
+		try
 		{
-			Node n = nl.item(i);
-			String id = n.getTextContent();
-			result.add (id);
+			URL url = new URL("http://openphacts.cs.man.ac.uk:9092/QueryExpander/mapUri?Uri="+URLEncoder.encode(uri, "UTF-8")+"&format=application/xml&targetUriPattern=http://www.conceptwiki.org/concept/$id");
+			DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+	        DocumentBuilder db = dbf.newDocumentBuilder();
+	        Document results = db.parse(url.openStream());
+			NodeList nl = results.getElementsByTagName("targetUri");
+			for (int i = 0; i < nl.getLength(); ++i)
+			{
+				Node n = nl.item(i);
+				String id = n.getTextContent();
+				result.add (id);
+			}
+			return result;
 		}
-		return result;
+		catch (Exception e)
+		{
+			//TODO: better error handling.
+			e.printStackTrace();
+			return Collections.emptyList();
+		}
 	}
 	
 	

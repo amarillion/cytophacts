@@ -82,33 +82,36 @@ public class CreateNetworkTask extends AbstractAction
 				// Add node to the network for a compound
 				CyNode nodeComp = createOrGet(comp);
 				
-				
-				List<String> uuids = om.getConceptWikiUUID(comp);
-				String uuid = uuids.get(0); // TODO check that there really is only one.
-				System.out.println ("UUID: " + uuid);
-				
 				// set name attribute for new nodes
 				myNet.getDefaultNodeTable().getRow(nodeComp.getSUID()).set("name", comp);
-				myNet.getDefaultNodeTable().getRow(nodeComp.getSUID()).set("uuid", uuid);
 				
-				// first get a list of compounds
-				List<String> pwys = om.getPathwaysForCompound(uuid, "Homo sapiens");
+				List<String> uuids = om.getConceptWikiUUID(comp);
 	
 				// Add an edge between compound and center
 				myNet.addEdge(nodeMainCompound, nodeComp, true);
 	
-				for (String pwy : pwys)
+				if (uuids.size() > 0)
 				{
-					// Add node to the network for pathway
-					CyNode nodePwy = createOrGet(pwy);
+					String uuid = uuids.get(0);
+					System.out.println ("UUID: " + uuid);
 					
-					// set name attribute for new nodes
-					myNet.getDefaultNodeTable().getRow(nodePwy.getSUID()).set("name", pwy);
+					myNet.getDefaultNodeTable().getRow(nodeComp.getSUID()).set("uuid", uuid);
 					
-					// Add an edge between compound and pathway
-					myNet.addEdge(nodeComp, nodePwy, true);
-				}
-			
+					// first get a list of compounds
+					List<String> pwys = om.getPathwaysForCompound(uuid, "Homo sapiens");
+		
+					for (String pwy : pwys)
+					{
+						// Add node to the network for pathway
+						CyNode nodePwy = createOrGet(pwy);
+						
+						// set name attribute for new nodes
+						myNet.getDefaultNodeTable().getRow(nodePwy.getSUID()).set("name", pwy);
+						
+						// Add an edge between compound and pathway
+						myNet.addEdge(nodeComp, nodePwy, true);
+					}
+				}			
 			}
 					
 			adapter.getCyNetworkManager().addNetwork(myNet);
