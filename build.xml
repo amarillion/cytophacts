@@ -4,6 +4,8 @@
 
 <project name="cytophacts" default="jar" basedir="." xmlns:ivy="antlib:org.apache.ivy.ant">
 
+	<property file="build.properties"/>
+	
 	<property name="ant.build.javac.target" value="1.6"/>
 	<property name="ant.build.javac.source" value="1.6"/>
     <property name="build.dir" value="./build"/>
