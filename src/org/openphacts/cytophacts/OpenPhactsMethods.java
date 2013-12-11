@@ -4,13 +4,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+
+import org.codehaus.jackson.map.ObjectMapper;
 
 public class OpenPhactsMethods 
 {
@@ -56,9 +56,19 @@ public class OpenPhactsMethods
 	 */
 	public List<String> getSubStructureSearch(String SMILES) throws IOException
 	{
-		URL url = new URL("https://beta.openphacts.org/1.3/structure/substructure?app_id=b9d2be99&app_key=c5eaa930c723fcfda47c1b0e0f201b4f&searchOptions.Molecule="+URLEncoder.encode(SMILES, "UTF-8")+"&_format=tsv");
-		return getOpenPhacts(url);
-
+		URL url = new URL("https://beta.openphacts.org/1.3/structure/substructure?app_id=b9d2be99&app_key=c5eaa930c723fcfda47c1b0e0f201b4f&searchOptions.Molecule="+URLEncoder.encode(SMILES, "UTF-8")+"&_format=json");
+		ObjectMapper mapper = new ObjectMapper(); // can reuse, share globally
+		InputStream is = url.openStream();
+		Map<String, ?> result = mapper.readValue(is, Map.class);
+		
+		List<?> searchResults = (List<?>)((Map<?, ?>)((Map<?, ?>)result.get("result")).get("primaryTopic")).get("result");
+		
+		List<String> ids = new ArrayList<String>();
+		for (Object o : searchResults)
+		{
+			ids.add ((String)((Map <?, ?>)o).get("_about"));
+		}
+		return ids;
 	}
 	
 	/**
