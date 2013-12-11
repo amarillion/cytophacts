@@ -1,6 +1,7 @@
 package org.openphacts.cytophacts;
 
 import java.awt.event.ActionEvent;
+import java.util.List;
 
 import javax.swing.AbstractAction;
 
@@ -8,6 +9,7 @@ import org.cytoscape.app.CyAppAdapter;
 import org.cytoscape.app.swing.CySwingAppAdapter;
 import org.cytoscape.model.CyNetwork;
 import org.cytoscape.model.CyNode;
+import org.cytoscape.model.CyTable;
 
 public class CreateNetworkTask extends AbstractAction 
 {
@@ -22,28 +24,50 @@ public class CreateNetworkTask extends AbstractAction
 	@Override
 	public void actionPerformed(ActionEvent e) 
 	{
+		OpenPhactsMethods om = new OpenPhactsMethods();
+		
 		// Create an empty network
 		CyNetwork myNet = adapter.getCyNetworkFactory().createNetwork();
-		myNet.getRow(myNet).set(CyNetwork.NAME, "My network");
+		myNet.getRow(myNet).set(CyNetwork.NAME, "OpenPhacts");
 		
+		String SMILES = "CC(=O)Oc1ccccc1C(=O)O";
+		List<String> compounds = om.getSubStructureSearch(SMILES);
+
 		// Add two nodes to the network
-		CyNode node1 = myNet.addNode();
-		CyNode node2 = myNet.addNode();
+		
+		CyNode nodeMainCompound = myNet.addNode();
+		
+		CyTable table = myNet.getDefaultNodeTable();
 		
 		// set name attribute for new nodes
-		myNet.getDefaultNodeTable().getRow(node1.getSUID()).set("name", "Node1");
-		myNet.getDefaultNodeTable().getRow(node2.getSUID()).set("name", "Node2");
-		
-		// Add an edge
-		myNet.addEdge(node1, node2, true);
+		table.getRow(nodeMainCompound.getSUID()).set("name", "INPUT");
+
+		for (String comp : compounds)
+		{
+			// Add two nodes to the network
+			CyNode nodeComp = myNet.addNode();
+			// set name attribute for new nodes
+			myNet.getDefaultNodeTable().getRow(nodeComp.getSUID()).set("name", comp);
+			
+			// first get a list of compounds
+			List<String> pwys = om.getPathwaysForCompound(comp, "Homo sapiens");
+
+			// Add an edge
+			myNet.addEdge(nodeMainCompound, nodeComp, true);
+
+			for (String pwy : pwys)
+			{
+				// Add two nodes to the network
+				CyNode nodePwy = myNet.addNode();
+				// set name attribute for new nodes
+				myNet.getDefaultNodeTable().getRow(nodePwy.getSUID()).set("name", pwy);
 				
-		adapter.getCyNetworkManager().addNetwork(myNet);
+				// Add an edge
+				myNet.addEdge(nodeComp, nodePwy, true);
+			}
 		
-		//// The following code will destroy the network
-		boolean destroyNetwork = false;
-		if (destroyNetwork){
-			// Destroy it
-			 adapter.getCyNetworkManager().destroyNetwork(myNet);			
-		}	
+		}
+				
+		adapter.getCyNetworkManager().addNetwork(myNet);		
 	}
 }
