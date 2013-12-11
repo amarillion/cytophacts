@@ -4,7 +4,9 @@ Bundle-Name: cytophacts
 Bundle-SymbolicName: cytophacts
 Bundle-Version: 1.0.0.qualifier
 Export-Package: cytophacts
-Bundle-ClassPath: .
+Bundle-ClassPath: .,
+ jackson-core-asl-1.8.4.jar,
+ jackson-mapper-asl-1.8.4.jar
 Import-Package: org.cytoscape.application;version="[3.0,4)",
  org.cytoscape.application.swing;version="[3.0,4)",
  org.cytoscape.model;version="[3.0,4)",

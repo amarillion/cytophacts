@@ -3,14 +3,16 @@ Bundle-ManifestVersion: 2
 Bundle-Name: cytophacts
 Bundle-SymbolicName: cytophacts
 Bundle-Version: 1.0.0.qualifier
-Import-Package: org.cytoscape.application;version="[3.0,4)",
+Import-Package: org.codehaus.jackson;version="1.8.4",
+ org.codehaus.jackson.map;version="1.8.4",
+ org.cytoscape.app;version="[3.0,4)",
+ org.cytoscape.app.swing;version="[3.0,4)",
+ org.cytoscape.application;version="[3.0,4)",
  org.cytoscape.application.swing;version="[3.0,4)",
  org.cytoscape.model;version="[3.0,4)",
  org.cytoscape.service.util;version="[3.0,4)",
  org.cytoscape.task;version="[3.0,4)",
  org.cytoscape.view.model;version="[3.0,4)",
  org.cytoscape.work;version="[3.0,4)",
- org.cytoscape.app;version="[3.0,4)",
- org.cytoscape.app.swing;version="[3.0,4)",
  org.osgi.framework;version="[1.5,2)"
 Bundle-Activator: org.openphacts.cytophacts.CyActivator
