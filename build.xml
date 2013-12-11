@@ -30,7 +30,7 @@
     <property name="lib.dir" value="./ivycache"/>
 
   	<!-- Define the Cytoscape directories -->
-    <property name="cytoscape.dir" value="${user.home}/opt/cytoscape-unix-3.2.0-SNAPSHOT/api"/>
+    <property name="cytoscape.dir" value="/Applications/Cytoscape_v3.0.0/api"/>
   	<property name="cytoscape.lib.dir" value="${cytoscape.dir}/lib"/>
     <property name="cytoscape.plugin.dir" value="${cytoscape.dir}/plugins"/>
 
