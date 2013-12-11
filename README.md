@@ -19,13 +19,13 @@ Step 3:
 	From your cytoscape 3 installation, gather all api jars. 
 	The following command will do it in one step:
 	
-	`cytoscape-unix-3.2.0-SNAPSHOT$ find framework/system/org -iname "*api*.jar" -exec cp '{}' . \;`
+	cytoscape-unix-3.2.0-SNAPSHOT$ find framework/system/org -iname "*api*.jar" -exec cp '{}' . \;
 	
 Step 4:
 	Create a build.properties file and place it in the same directory as build.xml.
 	This build.properties file should define the location of all the API jars, for example:
 	
-	`cytoscape.dir=/home/martijn/opt/cytoscape-unix-3.2.0-SNAPSHOT`
+	cytoscape.dir=/home/martijn/opt/cytoscape-unix-3.2.0-SNAPSHOT
 
 Step 5:
 	Build with `ant install`. If all goes well, the plugin will be copied

@@ -20,6 +20,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 
@@ -37,7 +39,7 @@ public class OpenPhactsMethods
 	}
 	
 	
-	public static void main(String[] args) throws IOException 
+	public static void main(String[] args) throws IOException, ParserConfigurationException, SAXException 
 	{
 		new OpenPhactsMethods().run();
 	}
@@ -54,15 +56,21 @@ public class OpenPhactsMethods
 		return getOpenPhacts(url);
 	}
 	
-	public String[] getConceptWikiUUID(String uri) throws IOException, ParserConfigurationException, SAXException{
-		String[] result;
+	public List<String> getConceptWikiUUID(String uri) throws IOException, ParserConfigurationException, SAXException
+	{
+		List<String> result = new ArrayList<String>();
 		URL url = new URL("http://openphacts.cs.man.ac.uk:9092/QueryExpander/mapUri?Uri="+URLEncoder.encode(uri, "UTF-8")+"&format=application/xml&targetUriPattern=http://www.conceptwiki.org/concept/$id");
 		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
         DocumentBuilder db = dbf.newDocumentBuilder();
         Document results = db.parse(url.openStream());
-		results.getElementsByTagName("targetUri");
-		result.a
-		return getOpenPhacts(url);
+		NodeList nl = results.getElementsByTagName("targetUri");
+		for (int i = 0; i < nl.getLength(); ++i)
+		{
+			Node n = nl.item(i);
+			String id = n.getTextContent();
+			result.add (id);
+		}
+		return result;
 	}
 	
 	
@@ -179,7 +187,7 @@ public class OpenPhactsMethods
 		return getOpenPhacts(url);
 	}
 
-	public void run() throws IOException
+	public void run() throws IOException, ParserConfigurationException, SAXException
 	{
 		/*URL url = new URL("http://ops2.few.vu.nl/pathways?app_id=b9d2be99&app_key=c5eaa930c723fcfda47c1b0e0f201b4f&pathway_organism=Homo+sapiens&_format=tsv");
 		InputStream is = url.openStream();
@@ -206,13 +214,14 @@ public class OpenPhactsMethods
 //		{
 //			System.out.println(ssl);
 //		}
-		
-		List<String> pwyByCompound = getPathwaysForCompound("http://ops.rsc.org/OPS1536399", "Homo sapiens");
-		for (String x : pwyByCompound)
-		{
-			System.out.println(x); 
-		}
-		List<String> mapIds = mapURI("http://ops.rsc.org/OPS1536399");
+//		
+//		List<String> pwyByCompound = getPathwaysForCompound("http://ops.rsc.org/OPS1536399", "Homo sapiens");
+//		for (String x : pwyByCompound)
+//		{
+//			System.out.println(x); 
+//		}
+//		
+		List<String> mapIds = getConceptWikiUUID("http://ops.rsc.org/OPS1536399");
 		for (String x : mapIds)
 		{
 			System.out.println(x); 

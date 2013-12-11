@@ -78,26 +78,30 @@ public class CreateNetworkTask extends AbstractAction
 				System.out.println ("Compound: " + comp);
 				if (count++ >= 20) break; //Don't look further than top 20.
 				
-				// Add two nodes to the network
+				// Add node to the network for a compound
 				CyNode nodeComp = createOrGet(comp);
+				List<String> uuids = om.getConceptWikiUUID(comp);
+				String uuid = uuids.get(0); // TODO check that there really is only one.
+				
 				// set name attribute for new nodes
 				myNet.getDefaultNodeTable().getRow(nodeComp.getSUID()).set("name", comp);
+				myNet.getDefaultNodeTable().getRow(nodeComp.getSUID()).set("uuid", uuid);
 				
 				// first get a list of compounds
-				List<String> pwys = om.getPathwaysForCompound(comp, "Homo sapiens");
+				List<String> pwys = om.getPathwaysForCompound(uuid, "Homo sapiens");
 	
-				// Add an edge
+				// Add an edge between compound and center
 				myNet.addEdge(nodeMainCompound, nodeComp, true);
 	
 				for (String pwy : pwys)
 				{
-					// Add two nodes to the network
+					// Add node to the network for pathway
 					CyNode nodePwy = createOrGet(pwy);
 					
 					// set name attribute for new nodes
 					myNet.getDefaultNodeTable().getRow(nodePwy.getSUID()).set("name", pwy);
 					
-					// Add an edge
+					// Add an edge between compound and pathway
 					myNet.addEdge(nodeComp, nodePwy, true);
 				}
 			
