@@ -5,12 +5,22 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
+
 
 import org.codehaus.jackson.map.ObjectMapper;
 
@@ -40,6 +50,17 @@ public class OpenPhactsMethods
 	
 	public List<String> getChemicalFromText(String compoundName) throws IOException{
 		URL url = new URL("https://beta.openphacts.org/1.3/search/byTag?app_id=b9d2be99&app_key=c5eaa930c723fcfda47c1b0e0f201b4f&q=lactate&uuid=07a84994-e464-4bbf-812a-a4b96fa3d197&_format=tsv");
+		return getOpenPhacts(url);
+	}
+	
+	public String[] getConceptWikiUUID(String uri) throws IOException, ParserConfigurationException, SAXException{
+		String[] result;
+		URL url = new URL("http://openphacts.cs.man.ac.uk:9092/QueryExpander/mapUri?Uri="+URLEncoder.encode(uri, "UTF-8")+"&format=application/xml&targetUriPattern=http://www.conceptwiki.org/concept/$id");
+		DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+        DocumentBuilder db = dbf.newDocumentBuilder();
+        Document results = db.parse(url.openStream());
+		results.getElementsByTagName("targetUri");
+		result.a
 		return getOpenPhacts(url);
 	}
 	
@@ -164,7 +185,11 @@ public class OpenPhactsMethods
 		{
 			System.out.println(x); 
 		}
-		
+		List<String> mapIds = mapURI("http://ops.rsc.org/OPS1536399");
+		for (String x : mapIds)
+		{
+			System.out.println(x); 
+		}
 	}
 
 }
