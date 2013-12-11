@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -42,11 +43,13 @@ public class OpenPhactsMethods
 	 * Use substructure search to get a list of similar compounds.
 	 * @param SMILES, for example "CC(=O)Oc1ccccc1C(=O)O"
 	 * @return list of compounds IDS
+	 * @throws IOException 
 	 */
-	public List<String> getSubStructureSearch(String SMILES)
+	public List<String> getSubStructureSearch(String SMILES) throws IOException
 	{
-		//TODO
-		return null;
+		URL url = new URL("https://beta.openphacts.org/1.3/structure/substructure?app_id=b9d2be99&app_key=c5eaa930c723fcfda47c1b0e0f201b4f&searchOptions.Molecule="+URLEncoder.encode(SMILES, "UTF-8")+"&_format=tsv");
+		return getOpenPhacts(url);
+
 	}
 	
 	/**
@@ -78,7 +81,6 @@ public class OpenPhactsMethods
 	public List<String> getPathways(String organismName) throws IOException
 	{
 		URL url = new URL("http://ops2.few.vu.nl/pathways?app_id=b9d2be99&app_key=c5eaa930c723fcfda47c1b0e0f201b4f&pathway_organism="+organismName.replace(" ", "+")+"&_format=tsv");
-		System.out.println(organismName.replace(" ", "+"));
 		return getOpenPhacts(url);
 	}
 
@@ -115,6 +117,11 @@ public class OpenPhactsMethods
 		for (String pwy : pathwayList)
 		{
 			System.out.println(pwy);
+		}
+		List<String> substructureList = getSubStructureSearch("CC(=O)Oc1ccccc1C(=O)O");
+		for (String ssl : substructureList)
+		{
+			System.out.println(ssl);
 		}
 	}
 
