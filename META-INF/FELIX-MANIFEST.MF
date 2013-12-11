@@ -1,20 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Cy3
-Bundle-SymbolicName: gb-cy3-ivy
+Bundle-Name: cytophacts
+Bundle-SymbolicName: cytophacts
 Bundle-Version: 1.0.0.qualifier
-Export-Package: com.generalbioinformatics.cy3
-Bundle-ClassPath: .,
- commons-codec-1.5.jar,
- felix-4.1.0.jar,
- guava-osgi-11.0.1.jar,
- jena-all-2.6.3.genbifo2.jar,
- jgoodies-forms-1.2.0.jar,
- jsyntaxpane-0.9.5.genbifo1.jar,
- com.generalbioinformatics.marrs-1.0.jar,
- com.generalbioinformatics.marrs.plus-1.0.jar,
- nl.helixsoft.gui-1.0.1.jar,
- nl.helixsoft.util-1.0.1.jar
+Export-Package: cytophacts
+Bundle-ClassPath: .
 Import-Package: org.cytoscape.application;version="[3.1,4)",
  org.cytoscape.application.swing;version="[3.1,4)",
  org.cytoscape.model;version="[3.1,4)",
@@ -29,8 +19,5 @@ Import-Package: org.cytoscape.application;version="[3.1,4)",
  javax.swing.text,
  javax.swing.filechooser,
  javax.swing.table,
- javax.swing.undo,
- org.xml.sax,
- org.jdom.input,
- org.jdom
-Bundle-Activator: com.generalbioinformatics.cy3.CyActivator
+ javax.swing.undo
+Bundle-Activator: org.openphacts.cytophacts.CyActivator
