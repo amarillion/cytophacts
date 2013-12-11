@@ -5,13 +5,13 @@ Bundle-SymbolicName: cytophacts
 Bundle-Version: 1.0.0.qualifier
 Export-Package: cytophacts
 Bundle-ClassPath: .
-Import-Package: org.cytoscape.application;version="[3.1,4)",
- org.cytoscape.application.swing;version="[3.1,4)",
- org.cytoscape.model;version="[3.1,4)",
- org.cytoscape.service.util;version="[3.1,4)",
- org.cytoscape.task;version="[3.1,4)",
- org.cytoscape.view.model;version="[3.1,4)",
- org.cytoscape.work;version="[3.1,4)",
+Import-Package: org.cytoscape.application;version="[3.0,4)",
+ org.cytoscape.application.swing;version="[3.0,4)",
+ org.cytoscape.model;version="[3.0,4)",
+ org.cytoscape.service.util;version="[3.0,4)",
+ org.cytoscape.task;version="[3.0,4)",
+ org.cytoscape.view.model;version="[3.0,4)",
+ org.cytoscape.work;version="[3.0,4)",
  org.osgi.framework;version="[1.5,2)",
  javax.swing,
  javax.swing.border,
